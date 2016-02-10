@@ -1,0 +1,6 @@
+#swap and undo
+.*.un~
+*~
+*.swp
+
+config.yaml
