@@ -22,6 +22,11 @@ OptionParser.new do |opts|
 
   opts.separator ""
   opts.on('-v', '--verbose', 'Increase verbosity') { |v| options[:verbose] = v }
+  opts.on('-ssh', '--ssh-protocol', 'selects the SSH protocol') { |v| options[:ssh] = v }
+  opts.on('-telnet', '--telnet-protocol', 'selects the Telnet protocol') { |v| options[:telnet] = v }
+  opts.on('-rlogin', '--rlogin-protocol', 'selects the Rlogin protocol') { |v| options[:rlogin] = v }
+  opts.on('-raw', '--raw-protocol', 'selects the raw protocol') { |v| options[:raw] = v }
+  opts.on('-serial', '--serial-protocol', 'selects a serial connection') { |v| options[:serial] = v }
 
   # No argument, shows at tail.  This will print an options summary.
   opts.on_tail("-h", "--help", "Show this message") do
@@ -30,6 +35,8 @@ OptionParser.new do |opts|
   end
 
 end.parse!
+
+puts options[:ssh]
 
 
 puts "start babun"
