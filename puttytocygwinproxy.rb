@@ -37,18 +37,26 @@ end
 begin
   parser = Slop::Parser.new(opts)
   result = parser.parse(ARGV)
+  user_host = result.arguments.join('%')
+
+  user = user_host.slice(/(^[^%]+(?=@))|((?<=%).*(?=@))/)       # Match everything before @. Start at ^ or %
+  host = user_host.slice(/(?<=@).*(?=%)|(?<=@)[^%]+$|^[^%@]+$/) # Match everything after @. Stop at $ or %. Or Catch everything (only one string allowed!)
+
+  raise ArgumentError, "Couldn't detect Host. Use '--help' for more information. The following Arguments were received: '#{ARGV.join(' ')}'".red if not host 
 rescue Slop::UnknownOption => e
   puts "The Option '#{e.flag}' is unkown. Use '--help' for more information.".red
   exit
+
 rescue Slop::MissingArgument => e
   puts "There was no Argument specified for the option '#{e.flags.join(', ')}'. Use '--help' for more information.".red
   exit
+
 end
 
-puts result[:H] #=> { hostname: "192.168.0.1", port: 80,
-                 #     files: [], verbose: false }
-
-puts opts # prints out help
+#puts result[:H] #=> { hostname: "192.168.0.1", port: 80,
+#                 #     files: [], verbose: false }
+#
+#puts opts # prints out help
 
 
 puts "start babun"
