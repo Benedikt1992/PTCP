@@ -13,9 +13,11 @@ end
 # Load configuration file
 #
 # Informations in the config file:
-#  - cygwin_installation_path: The path to the cygwin-shell (e.g. mintty) 
+#  - cygwin_installation_path: The path to the cygwin-shell (e.g. mintty)
+#  - ssh_client: The path to the openssh like ssh Client programm (default: '/usr/bin/ssh')
 raise IOError ,"Config file not found. Please place the file \"config.yaml\" into #{Dir.pwd}".red if not(File.exists?("config.yaml"))
 config = YAML.load_file("config.yaml")
+config["ssh_client"] = '/usr/bin/ssh' if not config["ssh_client"]
 
 # Original Manual http://tartarus.org/~simon/putty-snapshots/htmldoc/Chapter3.html#using-cmdline
 
@@ -63,8 +65,15 @@ end
 #
 #puts opts # prints out help
 
-
-puts "start babun"
-pid = Process.spawn("#{config["cygwin_installation_path"]} -")
-puts "Babun started with pid #{pid}"
-Process.detach(pid)
+# Default case: ssh
+if user and host
+  puts "start ssh session with #{config["cygwin_installation_path"]} #{config["ssh_client"]} #{user}@#{host}"
+  pid = Process.spawn("#{config["cygwin_installation_path"]} #{config["ssh_client"]} #{user}@#{host}")
+  puts "Babun started with pid #{pid}"
+  Process.detach(pid)
+else
+  puts "start ssh session"
+  pid = Process.spawn("#{config["cygwin_installation_path"]} -")
+  puts "Babun started with pid #{pid}"
+  Process.detach(pid)
+end
