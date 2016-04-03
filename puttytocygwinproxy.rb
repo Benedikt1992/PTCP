@@ -9,6 +9,11 @@ rescue LoadError => e
    puts "Couldn't load required Gem: #{e.message.slice!(25..50)}!".red
    exit
 end
+
+# Load configuration file
+#
+# Informations in the config file:
+#  - cygwin_installation_path: The path to the cygwin-shell (e.g. mintty) 
 raise IOError ,"Config file not found. Please place the file \"config.yaml\" into #{Dir.pwd}".red if not(File.exists?("config.yaml"))
 config = YAML.load_file("config.yaml")
 
@@ -18,7 +23,7 @@ config = YAML.load_file("config.yaml")
 # Definition of options
 #TODO Copyright informations with link and auto completion
 opts = Slop::Options.new
-opts.banner = "Usage: puttytocygwinproxy.rb [options]"
+opts.banner = "Usage: puttytocygwinproxy.rb [options] [user@]host"
 opts.separator ""
 opts.separator "Options:"
 opts.bool '-ssh', '--ssh-protocol', 'selects the SSH protocol (default)'
