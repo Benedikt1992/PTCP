@@ -5,20 +5,17 @@ begin
   require 'pp'
   require 'slop'
   require 'yaml'
+
+  # Custom modules and classes
+  require_relative 'configuration'
 rescue LoadError => e
    puts "Couldn't load required Gem: #{e.message.slice!(25..50)}!".red
    exit
 end
 
 # Load configuration file
-#
-# Informations in the config file:
-#  - cygwin_installation_path: The path to the cygwin-shell (e.g. mintty)
-#  - ssh_client: The path to the openssh like ssh Client programm (default: '/usr/bin/ssh')
-#  - detach_childprocesses: Yes|No, Default: No, Determine if child processes schould be detached from this programm or if the programm should wait for the child processes.
-raise IOError ,"Config file not found. Please place the file \"config.yaml\" into #{Dir.pwd}".red if not(File.exists?("config.yaml"))
-config = YAML.load_file("config.yaml")
-config["ssh_client"] = '/usr/bin/ssh' if not config["ssh_client"]
+config = Configuration.load
+puts config
 
 # Original Manual http://tartarus.org/~simon/putty-snapshots/htmldoc/Chapter3.html#using-cmdline
 
