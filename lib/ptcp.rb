@@ -26,22 +26,12 @@ module PTCP
 
     connection ||= result[:ssh] ? :ssh.id2name : nil
     connection ||= result[:telnet] ? :telnet.id2name : nil
-    PTCP::Connections[connection].start
+    pid = PTCP::Connections[connection].start
 
-    if user and host
-      puts "start ssh session with #{PTCP::Settings.cygwin_installation_path} #{PTCP::Settings.ssh_client} #{user}@#{host}" if result[:verbose]
-      pid = Process.spawn("#{PTCP::Settings.cygwin_installation_path} #{PTCP::Settings.ssh_client} #{user}@#{host}")
-      puts "Babun started with pid #{pid}" if result[:verbose]
-      if PTCP::Settings.detach_childprocesses
-        Process.detach(pid)
-      else
-        Process.wait pid
-      end
-    else
-      puts "start ssh session with #{PTCP::Settings.cygwin_installation_path} #{PTCP::Settings.ssh_client} #{host}" if result[:verbose]
-      pid = Process.spawn("#{PTCP::Settings.cygwin_installation_path} #{PTCP::Settings.ssh_client} #{host}")
-      puts "Babun started with pid #{pid}" if result[:verbose]
+    if PTCP::Settings.detach_childprocesses
       Process.detach(pid)
+    else
+      Process.wait pid
     end
   end
 end
