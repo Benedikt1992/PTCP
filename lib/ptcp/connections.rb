@@ -25,7 +25,7 @@ module PTCP
         connection = connection.to_s.downcase
         if File.exist?(path connection)
           require "ptcp/connections/#{connection}"
-          class_name = "ptcp::connections::#{connection.capitalize}"
+          class_name = "PTCP::Connections::#{connection.capitalize}"
           hash[connection] = (eval class_name)
         else
           raise "connection #{connection} is not supported!"
