@@ -2,6 +2,7 @@ require "ptcp/version"
 require 'ptcp/settings'
 require 'ptcp/extensions'
 require 'ptcp/util'
+require 'ptcp/connections'
 require 'colorize'
 
 module PTCP
@@ -22,6 +23,11 @@ module PTCP
     #puts opts # prints out help
 
     # Default case: ssh
+
+    connection ||= result[:ssh] ? :ssh.id2name : nil
+    connection ||= result[:telnet] ? :telnet.id2name : nil
+    PTCP::Connections[connection].start
+
     if user and host
       puts "start ssh session with #{PTCP::Settings.cygwin_installation_path} #{PTCP::Settings.ssh_client} #{user}@#{host}" if result[:verbose]
       pid = Process.spawn("#{PTCP::Settings.cygwin_installation_path} #{PTCP::Settings.ssh_client} #{user}@#{host}")
