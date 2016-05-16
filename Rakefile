@@ -8,3 +8,9 @@ Rake::TestTask.new(:test) do |t|
 end
 
 task :default => :spec
+
+desc "Make ptcp.exe file"
+task :exe do
+  sh %{ cd bin && rake exe}
+  sh %{ mv bin/ptcp.exe .}
+end

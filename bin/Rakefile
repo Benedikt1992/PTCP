@@ -1,0 +1,4 @@
+desc "Make ptcp.exe file"
+task :exe do
+  sh  %{ ocra ptcp ../lib/**/*.rb --no-dep-run --gemfile ../ptcp.gemspec --add-all-core --gem-full --debug-extract --chdir-first --gem-full=rake}
+end
