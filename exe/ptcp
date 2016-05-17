@@ -1,8 +1,7 @@
 #!/usr/bin/env ruby
-lib = File.expand_path('../../lib', __FILE__)
+lib = File.expand_path('../../lib', $0)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-puts __FILE__
-puts lib
+
 require 'ptcp'
 
-PTCP.start
+PTCP.start unless defined?(Ocra)
