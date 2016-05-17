@@ -9,8 +9,11 @@ end
 
 task :default => :spec
 
+directory "pkg"
+
 desc "Make ptcp.exe file"
-task :exe do
-  sh %{ cd bin && rake exe}
-  sh %{ mv bin/ptcp.exe .}
+task :exe => "pkg" do
+  sh %{ ocra exe/ptcp lib/**/*.rb }
+  #sh "mkdir -p pkg"
+  sh %{ mv ptcp.exe pkg/ }
 end
