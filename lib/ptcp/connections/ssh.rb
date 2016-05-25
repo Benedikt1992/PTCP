@@ -24,12 +24,20 @@ module PTCP
         def build_command
           command = "#{Settings.cygwin_installation_path} #{Settings.ssh_client}"
 
-          command << " #{Settings.user}@" if Settings.user
-          command << "#{Settings.host}"
+          command << " #{user}@#{host}"
 
           puts "Start ssh session with #{command}".green if Settings.v
 
           command
+        end
+
+        def user
+          print "login as: "; STDOUT.flush unless Settings.user
+          Settings.user || STDIN.gets.chomp
+        end
+
+        def host
+          Settings.host
         end
       end
     end
