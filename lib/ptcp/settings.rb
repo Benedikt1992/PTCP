@@ -86,6 +86,7 @@ module PTCP
 
       end
 
+      ARGV.clear
       @_settings.deep_merge!(result.to_hash.symbolize_keys!)
     end
 
