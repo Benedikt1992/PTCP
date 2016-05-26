@@ -32,7 +32,10 @@ module PTCP
         end
 
         def user
-          print "login as: "; STDOUT.flush unless Settings.user
+          unless Settings.user
+            print "login as: "
+            STDOUT.flush
+          end
           Settings.user || STDIN.gets.chomp
         end
 
