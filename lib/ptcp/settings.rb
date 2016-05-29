@@ -51,16 +51,19 @@ module PTCP
       opts = Slop::Options.new
       opts.banner = "Usage: puttytocygwinproxy.rb [options] [user@]host"
       opts.separator ""
-      opts.separator "Options:"
+      opts.separator "Modes:"
       opts.bool '-ssh', 'selects the SSH protocol (default)'
       opts.bool '-telnet', 'selects the Telnet protocol'
       opts.bool '-rlogin', 'selects the Rlogin protocol'
       opts.bool '-raw', 'selects the raw protocol'
       opts.string '-serial', 'selects a serial connection'
+      opts.separator ""
+      opts.separator "Options:"
+      opts.string '-l', 'specify a login name'
       opts.string '-pw', 'supply your password on the command line (not recommended)'
       opts.separator ""
       opts.bool '-v', 'Increase verbosity'
-      opts.on '--help' do
+      opts.on '-h', '--help' do
         puts opts
         exit
       end
@@ -71,7 +74,7 @@ module PTCP
         result = parser.parse(ARGV)
 
         user_host = result.arguments.join('%')
-        @_settings[:user] = user_host.slice(/(^[^%]+(?=@))|((?<=%).*(?=@))/)       # Match everything before @. Start at ^ or %
+        @_settings[:user] = result[:l] || user_host.slice(/(^[^%]+(?=@))|((?<=%).*(?=@))/)       # Match everything before @. Start at ^ or %
         @_settings[:host] = user_host.slice(/(?<=@).*(?=%)|(?<=@)[^%]+$|^[^%@]+$/) # Match everything after @. Stop at $ or %. Or Catch everything (only one string allowed!)
 
         # Validation
