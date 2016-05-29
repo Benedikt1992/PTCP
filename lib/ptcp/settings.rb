@@ -57,6 +57,7 @@ module PTCP
       opts.bool '-rlogin', 'selects the Rlogin protocol'
       opts.bool '-raw', 'selects the raw protocol'
       opts.string '-serial', 'selects a serial connection'
+      opts.string '-pw', 'supply your password on the command line (not recommended)'
       opts.separator ""
       opts.bool '-v', 'Increase verbosity'
       opts.on '--help' do
