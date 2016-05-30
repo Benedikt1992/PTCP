@@ -55,7 +55,7 @@ module PTCP
             print "login as: "
             STDOUT.flush
           end
-          Settings.user || STDIN.gets.chomp
+          Settings.user ||= STDIN.gets.chomp
         end
 
         def host

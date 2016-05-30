@@ -15,7 +15,6 @@ module PTCP
     extend self
 
     @_settings = {}
-    attr_reader :_settings
 
     def load filename=nil
       # Load configuration file
@@ -35,6 +34,7 @@ module PTCP
       config[:ssh_client] = '/usr/bin/ssh' if not config[:ssh_client]
 
       @_settings.deep_merge!(config)
+      set_attr_accessors
     end
 
     def method_missing(name, *args, &block)
@@ -92,11 +92,22 @@ module PTCP
 
       ARGV.clear
       @_settings.deep_merge!(result.to_hash.symbolize_keys!)
+      set_attr_accessors
     end
 
     def default_config_path
       return "#{ENV['localappdata'].gsub(/\\/,'/')}/ptcp/config.yml" if PTCP::Util::OS.is_windows?
       '/etc/ptcp/config.yml'
+    end
+
+    private
+
+    def set_attr_accessors
+       @_settings.each do |name, value|
+         instance_variable_set("@#{name}", value)
+         self.class.send(:attr_accessor, name)
+       end
+       @_settings
     end
   end
 end
