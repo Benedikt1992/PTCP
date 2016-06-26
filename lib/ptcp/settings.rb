@@ -26,7 +26,7 @@ module PTCP
       if filename
         config = YAML.load_file(filename).symbolize_keys!
       else
-        raise IOError ,"Config file not found. Please place it into '#{default_config_path}'".red if not(File.exists?(default_config_path))
+        abort("Config file not found. Please place it into '#{default_config_path}'".red) if not(File.exists?(default_config_path))
         config = YAML.load_file(default_config_path).symbolize_keys!
       end
 
