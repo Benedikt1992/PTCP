@@ -23,11 +23,13 @@ module PTCP
       #  - cygwin_installation_path: The path to the cygwin-shell (e.g. mintty)
       #  - ssh_client: The path to the openssh like ssh Client programm (default: '/usr/bin/ssh')
       #  - detach_childprocesses: Yes|No, Default: No, Determine if child processes schould be detached from this programm or if the programm should wait for the child processes.
-      if filename
+      filename ||= default_config_path
+      begin
         config = YAML.load_file(filename).symbolize_keys!
-      else
-        abort("Config file not found. Please place it into '#{default_config_path}'".red) if not(File.exists?(default_config_path))
-        config = YAML.load_file(default_config_path).symbolize_keys!
+      rescue Errno::ENOENT
+        abort "Config file not found at #{File.expand_path(filename)}".red
+      rescue Errno::EISDIR
+        abort "#{File.expand_path(filename)} is a directory. Please specify a file.".red
       end
 
       # Defaults
@@ -63,6 +65,9 @@ module PTCP
       opts.string '-pw', 'supply your password on the command line (not recommended)'
       opts.separator ""
       opts.bool '-v', 'Increase verbosity'
+      opts.separator ""
+      opts.separator "Options of PTCP"
+      opts.string '--config_file', "Specify a different path for the configuration file", default: default_config_path
       opts.on '-h', '--help' do
         puts opts
         exit

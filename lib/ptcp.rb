@@ -9,12 +9,11 @@ module PTCP
   extend self
 
   def start
-    PTCP::Settings.load
-
-    # Original Manual http://tartarus.org/~simon/putty-snapshots/htmldoc/Chapter3.html#using-cmdline
-
     # Parse the parameters from commandline
     result = PTCP::Settings.parse_cli_options
+    PTCP::Settings.load PTCP::Settings.config_file
+    # Original Manual http://tartarus.org/~simon/putty-snapshots/htmldoc/Chapter3.html#using-cmdline
+
     user = result[:user]
     host = result[:host]
     #puts result[:H] #=> { hostname: "192.168.0.1", port: 80,
