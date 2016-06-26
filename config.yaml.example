@@ -1,4 +1,5 @@
 ---
 # Set the path to your cygwin executable. E.g. mintty.exe
 cygwin_installation_path: "A:/Path/to/the/executable.exe"
+detach_childprocesses: Yes #or No
 

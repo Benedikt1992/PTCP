@@ -10,12 +10,12 @@ module PTCP
 
   def start
     # Parse the parameters from commandline
-    result = PTCP::Settings.parse_cli_options
+    PTCP::Settings.parse_cli_options
     PTCP::Settings.load PTCP::Settings.config_file
     # Original Manual http://tartarus.org/~simon/putty-snapshots/htmldoc/Chapter3.html#using-cmdline
 
-    user = result[:user]
-    host = result[:host]
+    user = PTCP::Settings.user
+    host = PTCP::Settings.host
     #puts result[:H] #=> { hostname: "192.168.0.1", port: 80,
     #                 #     files: [], verbose: false }
     #
@@ -23,8 +23,8 @@ module PTCP
 
     # Default case: ssh
 
-    connection ||= result[:ssh] ? :ssh.id2name : nil
-    connection ||= result[:telnet] ? :telnet.id2name : nil
+    connection ||= PTCP::Settings.ssh ? :ssh.id2name : nil
+    connection ||= PTCP::Settings.telnet ? :telnet.id2name : nil
     pid = PTCP::Connections[connection].start
 
     if PTCP::Settings.detach_childprocesses
